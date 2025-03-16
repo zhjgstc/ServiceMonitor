@@ -1,0 +1,61 @@
+{
+  "tasks": [
+    {
+      "name": "主数据库",
+      "type": "MSSQL",
+      "interval": 30,
+      "unit": "seconds",
+      "ip": "127.0.0.1",
+      "data": "data source=127.0.0.1;initial catalog=Your-DatabaseName;user id=YourUserName;password=YourPassword;Encrypt=false;"
+    },
+    {
+      "name":"MySQL数据库",
+      "type":"MYSQL",
+      "interval":30,
+      "unit":"seconds",
+      "ip":"127.0.0.1",
+      "data":"server=localhost;user id=YourUserName;password=YourPassword;database=YourDatabaseName;port=3306;CharSet=utf8;"
+    },
+    {
+      "name": "Redis服务",
+      "type": "REDIS",
+      "interval": 30,
+      "unit": "seconds",
+      "ip": "127.0.0.1",
+      "data": "localhost:6380,password=123456,ssl=True,abortConnect=False"
+    },
+    {
+      "name": "MongoDB服务",
+      "type": "MONGODB",
+      "interval": 30,
+      "unit": "seconds",
+      "ip": "127.0.0.1",
+      "data": "mongodb://localhost:27017"
+    },
+    {
+      "name": "PostgreSQL服务",
+      "type": "POSTGRESQL",
+      "interval": 30,
+      "unit": "seconds",
+      "ip": "127.0.0.1",
+      "data": "Server=localhost;Port=5432;User Id=YourUserName;Password=YourPassword;Database=YourDatabaseName;"
+    },
+    {
+      "name": "Oracle服务",
+      "type": "ORACLE",
+      "interval": 30,
+      "unit": "seconds",
+      "ip": "127.0.0.1",
+      "data": "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=YourServiceName)));User Id=YourUserName;Password=YourPassword;"
+    },
+    {
+      "name": "一个Http服务",
+      "type": "HTTP-Active",
+      "interval": 10,
+      "unit": "seconds",
+      "ip": "127.0.0.1",
+      "data": "http://localhost:5062",
+      "Timeout": 20
+    }
+  ]
+}
