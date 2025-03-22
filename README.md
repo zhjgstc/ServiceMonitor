@@ -175,3 +175,61 @@ Welcome to contribute to this project! If you find any issues or have suggestion
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
+
+### 主动注册和上报说明
+ServiceMonitor支持用户主动注册新的监控任务以及上报任务状态。这一功能允许你灵活添加新的需要监控的服务，或者及时更新现有任务的状态信息。
+1. **注册监控任务**：通过向`TaskController`的`Register`接口发起请求来注册新的监控任务。请求需包含一个符合`TaskConfig`模型的JSON数据体，其中`name`字段不能为空，它代表监控任务的名称。例如，使用`curl`命令行工具进行注册：
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{
+    "name": "新的HTTP服务监控",
+    "type": "HTTP-Active",
+    "interval": 15,
+    "unit": "seconds",
+    "ip": "192.168.1.100",
+    "data": "http://192.168.1.100:8080",
+    "Timeout": 30
+}' http://localhost:5062/Task/Register
+```
+上述命令向系统注册了一个新的HTTP服务监控任务。如果注册成功，系统会返回`200 OK`状态码；若`name`字段为空，系统将返回`400 Bad Request`错误码。
+2. **上报任务状态**：使用`TaskController`的`Report`接口来上报监控任务的状态。同样需要在请求中携带符合`TaskConfig`模型的JSON数据体，`name`字段不能为空。上报时，系统会根据任务的`ip`和`name`查找对应的任务，并更新其`LastReportTime`（上次报告时间）和`Status`（状态）。若找不到匹配的任务，系统会将其作为新任务进行注册。示例`curl`命令如下：
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{
+    "name": "新的HTTP服务监控",
+    "type": "HTTP-Active",
+    "interval": 15,
+    "unit": "seconds",
+    "ip": "192.168.1.100",
+    "data": "http://192.168.1.100:8080",
+    "Timeout": 30
+}' http://localhost:5062/Task/Report
+```
+通过主动注册和上报功能，你可以更好地管理监控任务，确保系统及时获取服务的最新状态信息。
+
+### Instructions for Active Registration and Reporting
+ServiceMonitor supports users to actively register new monitoring tasks and report task statuses. This feature allows you to flexibly add new services to be monitored or update the status information of existing tasks in a timely manner.
+1. **Registering Monitoring Tasks**: Register a new monitoring task by sending a request to the `Register` interface of the `TaskController`. The request should include a JSON data body that conforms to the `TaskConfig` model. The `name` field cannot be empty, representing the name of the monitoring task. For example, use the `curl` command - line tool to register:
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{
+    "name": "New HTTP Service Monitoring",
+    "type": "HTTP-Active",
+    "interval": 15,
+    "unit": "seconds",
+    "ip": "192.168.1.100",
+    "data": "http://192.168.1.100:8080",
+    "Timeout": 30
+}' http://localhost:5062/Task/Register
+```
+The above command registers a new HTTP service monitoring task in the system. If the registration is successful, the system will return a `200 OK` status code. If the `name` field is empty, the system will return a `400 Bad Request` error code.
+2. **Reporting Task Statuses**: Use the `Report` interface of the `TaskController` to report the status of monitoring tasks. Similarly, a JSON data body conforming to the `TaskConfig` model is required in the request, and the `name` field cannot be empty. When reporting, the system will find the corresponding task based on the task's `ip` and `name` and update its `LastReportTime` (last report time) and `Status` (status). If no matching task is found, the system will register it as a new task. An example `curl` command is as follows:
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{
+    "name": "New HTTP Service Monitoring",
+    "type": "HTTP-Active",
+    "interval": 15,
+    "unit": "seconds",
+    "ip": "192.168.1.100",
+    "data": "http://192.168.1.100:8080",
+    "Timeout": 30
+}' http://localhost:5062/Task/Report
+```
+Through the active registration and reporting functions, you can better manage monitoring tasks and ensure that the system obtains the latest status information of services in a timely manner. 
