@@ -43,7 +43,8 @@ namespace ServiceMonitor.Web
                     }
                 }
             }, null, 0, 2000);
-
+            // 启动控制台输入监听线程
+            Task.Run(() => ListenForCommands());
             StartWebService(args);
         }
 
@@ -216,6 +217,38 @@ namespace ServiceMonitor.Web
             else
             {
                 Console.WriteLine($"Job {name} not found.");
+            }
+        }
+
+        private static void ListenForCommands()
+        {
+            while (true)
+            {
+                var command = Console.ReadLine();
+                if (command != null && command.Trim().ToLower() == "reload")
+                {
+                    Console.WriteLine("read config...");
+                    try
+                    {
+                        CurrentConfig = LoadConfig(_configFilePath);
+                        var keys = CurrentConfig.Tasks.Select(s => s.Ip + "_" + s.Name).ToList();
+                        foreach (var key in keys)
+                        {
+                            DeleteJob(key);
+                        }
+
+                        foreach (var task in CurrentConfig.Tasks)
+                        {
+                            AddJob(task);
+                        }
+
+                        Console.WriteLine("reload config success.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"read conf: {ex.Message}");
+                    }
+                }
             }
         }
     }
