@@ -1,4 +1,4 @@
-# Service Monitor 服务监控系统
+# Service Monitor 服务监控
 
 ## 概述
 Service Monitor 是一个用于监控各种服务（如数据库、Redis、MongoDB、HTTP 服务等）状态的系统。它通过定期检查服务的连接状态或可用性，并在服务不可用时采取相应的措施（如停止监控任务、发送短信或邮件通知）。
